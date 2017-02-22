@@ -9,4 +9,7 @@
                         aliquet nec, vulputate.</string>
 
     <string name="data_scadenza">28/02/2017</string>
+    <string name="action_settings">Settings</string>
+    <string name="delete">delete</string>
+    <string name="action_edit">edit</string>
 </resources>

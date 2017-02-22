@@ -1,15 +1,30 @@
 package com.example.d_odo.todolist.models;
 
+import java.text.DateFormat;
+
 /**
  * Created by d-odo on 20/02/2017.
  */
 
 public class Note {
-    String titolo;
+    public String titolo;
     String dataCreazione;
+
+    DateFormat date
+    public Note(String titolo, String corpo, String dataScadenza) {
+        this.titolo = titolo;
+        this.corpo = corpo;
+        this.dataScadenza = dataScadenza;
+    }
+
+    public Note(){}
+
     String ultimaModifica;
     String corpo;
     String dataScadenza;
+
+
+
     enum stato {DA_FARE, ARCHIVIATE};
 
     public String getDataCreazione() {
