@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<GridView android:layout_height="2"
+
+    xmlns:android="http://schemas.android.com/apk/res/android" />
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -16,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7.5"
-            android:text="@string/titolo"
+            android:text="@string/title"
             android:textSize="22dp"
             android:gravity="center"/>
 
@@ -40,7 +43,7 @@
         android:id="@+id/note_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/corpo"
+        android:text="@string/body"
         android:textSize="20dp"
         android:layout_marginBottom="8dp"/>
 

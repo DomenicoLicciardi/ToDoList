@@ -5,19 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.d_odo.todolist.R;
 import com.example.d_odo.todolist.adapters.NoteAdapter;
+import com.example.d_odo.todolist.database.Database;
 import com.example.d_odo.todolist.models.Note;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by d-odo on 20/02/2017.
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity{
     StaggeredGridLayoutManager layoutManager;
     NoteAdapter adapter;
 
+    Database dbHandler;
 
 
     @Override
@@ -58,14 +63,13 @@ public class MainActivity extends AppCompatActivity{
 
         noteRV = (RecyclerView) findViewById(R.id.note_rv);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        adapter = new NoteAdapter();
+        adapter = new NoteAdapter(this);
 
         noteRV.setAdapter(adapter);
         noteRV.setLayoutManager(layoutManager);
 
         registerForContextMenu(noteRV);
 
-        adapter.setDataSet(getNotes());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_note);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,43 +81,48 @@ public class MainActivity extends AppCompatActivity{
                 startActivityForResult(i, NOTE_ADD_REQUEST);
             }
         });
+
+        if(getIntent() != null) {
+            if(getIntent().getAction() != null) {
+                if(getIntent().getAction().equals(Intent.ACTION_SEND)){
+                    Intent i = new Intent(MainActivity.this, NoteAddActivity.class);
+                    i.putExtra(ACTION_MODE, CREATE_MODE);
+                    i.putExtra(NOTE_BODY_KEY,getIntent().getStringExtra(Intent.EXTRA_TEXT));
+                    Log.d("MainActivity",getIntent().getStringExtra(Intent.EXTRA_TEXT));
+                    startActivityForResult(i, NOTE_ADD_REQUEST);
+                }
+            }
+        }
+
+
+        dbHandler = new Database(this);
+        adapter.setDataSet(dbHandler.getAllNotes());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getNotes();
     }
 
 
-
-    private ArrayList<Note> getNotes() {
-
-        ArrayList<Note> note= new ArrayList<>();
-        Note android= new Note("Android","Abbiamo android","25/02/2017");
-        Note design= new Note("Design","Non so perchè l'ho messo", "04/03/2017");
-
-        note.add(android);
-        note.add(design);
-
-        return note;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == NOTE_ADD_REQUEST && resultCode == Activity.RESULT_OK ) {
             Note note = new Note();
-            note.setTitolo(data.getStringExtra(NOTE_TITLE_KEY));
-            note.setCorpo(data.getStringExtra(NOTE_BODY_KEY));
-            note.setDataScadenza(data.getStringExtra(NOTE_DEADLINE_KEY));
+            note.setTitle(data.getStringExtra(NOTE_TITLE_KEY));
+            note.setBody(data.getStringExtra(NOTE_BODY_KEY));
+            //note.setDataScadenza(data.getStringExtra(NOTE_DEADLINE_KEY));
+            dbHandler.addNote(note);
             adapter.addNote(note);
         }
 
         if(requestCode == NOTE_EDIT_REQUEST && resultCode == RESULT_OK) {
 
-            editingNote.setTitolo(data.getStringExtra(NOTE_TITLE_KEY));
-            editingNote.setTitolo(data.getStringExtra(NOTE_BODY_KEY));
+            editingNote.setTitle(data.getStringExtra(NOTE_TITLE_KEY));
+            editingNote.setTitle(data.getStringExtra(NOTE_BODY_KEY));
+            dbHandler.updateNote(editingNote);
             adapter.updateNote(editingNote,adapter.getPosition());
         }
 
@@ -127,14 +136,16 @@ public class MainActivity extends AppCompatActivity{
             case R.id.action_delete:
                 //remove from adapter
                 adapter.removeNote(adapter.getPosition());
+                //remove record
+                dbHandler.deletNote(adapter.getNote(adapter.getPosition()));
                 break;
 
             case R.id.action_edit:
                 editingNote = adapter.getNote(adapter.getPosition());
                 Intent i = new Intent(this,NoteAddActivity.class);
                 i.putExtra(ACTION_MODE,EDITE_MODE);
-                i.putExtra(NOTE_TITLE_KEY,editingNote.getTitolo());
-                i.putExtra(NOTE_BODY_KEY,editingNote.getTitolo());
+                i.putExtra(NOTE_TITLE_KEY,editingNote.getTitle());
+                i.putExtra(NOTE_BODY_KEY,editingNote.getTitle());
                 startActivityForResult(i,NOTE_EDIT_REQUEST);
                 break;
         }

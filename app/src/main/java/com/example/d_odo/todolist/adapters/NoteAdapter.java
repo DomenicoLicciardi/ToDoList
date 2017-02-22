@@ -1,7 +1,7 @@
 package com.example.d_odo.todolist.adapters;
 
+import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
 
+    private Context context;
     private ArrayList<Note> dataSet = new ArrayList<>();
     private int position;
 
@@ -49,6 +50,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
     }
 
     public void setPosition(int position) {
+
         this.position= position;
     }
 
@@ -61,11 +63,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
     @Override
     public void onBindViewHolder(NoteVH holder, int position) {
         Note note= dataSet.get(position);
-        holder.titleTv.setText(note.getTitolo());
-        holder.dateCreateTv.setText(note.getDataCreazione());
-        holder.lastUpdateTv.setText(note.getUltimaModifica());
-        holder.bodyTv.setText(note.getCorpo());
-        holder.dateDeadlineTv.setText(note.getDataScadenza());
+        holder.titleTv.setText(note.getTitle());
+       // holder.dateCreateTv.setText(note.getDataCreazione());
+        // holder.lastUpdateTv.setText(note.getUltimaModifica());
+        holder.bodyTv.setText(note.getBody());
+        //   holder.dateDeadlineTv.setText(note.getDataScadenza());
     }
 
     @Override
@@ -73,32 +75,28 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteVH> {
         return dataSet.size();
     }
 
+    public NoteAdapter(Context c) {
+        context = c;
+    }
+
     public void removeNote(int position) {
         dataSet.remove(position);
     }
 
 
-    public class NoteVH extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class NoteVH extends RecyclerView.ViewHolder{
         TextView titleTv,dateCreateTv,lastUpdateTv,bodyTv,dateDeadlineTv;
 
         public NoteVH(View itemView) {
             super(itemView);
             titleTv= (TextView)itemView.findViewById(R.id.note_title);
-            dateCreateTv= (TextView) itemView.findViewById(R.id.note_date_create);
-            lastUpdateTv= (TextView) itemView.findViewById(R.id.note_last_update);
+            //dateCreateTv= (TextView) itemView.findViewById(R.id.note_date_create);
+            //lastUpdateTv= (TextView) itemView.findViewById(R.id.note_last_update);
             bodyTv= (TextView) itemView.findViewById(R.id.note_body);
-            dateDeadlineTv= (TextView) itemView.findViewById(R.id.note_date_deadline);
+            //dateDeadlineTv= (TextView) itemView.findViewById(R.id.note_date_deadline);
         }
 
-        @Override
-        public void onClick(View v) {
-            EditText title = (EditText) v.findViewById(R.id.note_add_title);
-            EditText body = (EditText) v.findViewById(R.id.note_add_body);
-            EditText dateDeadline = (EditText) v.findViewById(R.id.note_add_date_deadline);
-            Intent i = new Intent();
-            i.setClass(v.getContext(),NoteAddActivity.class);
-            ((MainActivity) v.getContext()).startActivityForResult(i,MainActivity.NOTE_ADD_REQUEST);
-    }
+
     }
 
 }

@@ -1,27 +1,43 @@
 package com.example.d_odo.todolist.models;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by d-odo on 20/02/2017.
  */
 
 public class Note {
-    public String titolo;
+    public String title;
     String dataCreazione;
+    String ultimaModifica;
+    String body;
+    String dataScadenza;
+private int id;
 
-    DateFormat date
-    public Note(String titolo, String corpo, String dataScadenza) {
-        this.titolo = titolo;
-        this.corpo = corpo;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    DateFormat date = new SimpleDateFormat("MM/dd/yy");
+    Date today = Calendar.getInstance().getTime();
+
+
+    public Note(String title, String body, String dataCreazione, String dataScadenza) {
+        this.title = title;
+        this.body = body;
+        this.dataCreazione= date.format(today).toString();
         this.dataScadenza = dataScadenza;
     }
 
     public Note(){}
 
-    String ultimaModifica;
-    String corpo;
-    String dataScadenza;
 
 
 
@@ -35,12 +51,12 @@ public class Note {
         this.dataCreazione = dataCreazione;
     }
 
-    public String getTitolo() {
-        return titolo;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitolo(String titolo) {
-        this.titolo = titolo;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getUltimaModifica() {
@@ -51,12 +67,12 @@ public class Note {
         this.ultimaModifica = ultimaModifica;
     }
 
-    public String getCorpo() {
-        return corpo;
+    public String getBody() {
+        return body;
     }
 
-    public void setCorpo(String corpo) {
-        this.corpo = corpo;
+    public void setBody(String body) {
+        this.body = body;
     }
 
     public String getDataScadenza() {

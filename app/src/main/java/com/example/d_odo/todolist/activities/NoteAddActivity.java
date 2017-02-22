@@ -36,7 +36,7 @@ public class NoteAddActivity extends AppCompatActivity{
 
         titleET= (EditText) findViewById(R.id.note_add_title);
         bodyET= (EditText) findViewById(R.id.note_add_body);
-        dateDeadlineET= (EditText) findViewById(R.id.note_add_date_deadline);
+        //dateDeadlineET= (EditText) findViewById(R.id.note_add_date_deadline);
 
 
         intent = getIntent();
@@ -45,7 +45,7 @@ public class NoteAddActivity extends AppCompatActivity{
             if(intent.getIntExtra(MainActivity.ACTION_MODE,0) == MainActivity.NOTE_EDIT_REQUEST) {
                 titleET.setText(intent.getStringExtra(MainActivity.NOTE_TITLE_KEY));
                 bodyET.setText(intent.getStringExtra(MainActivity.NOTE_BODY_KEY));
-                dateDeadlineET.setText(intent.getStringExtra(MainActivity.NOTE_DEADLINE_KEY));
+                //dateDeadlineET.setText(intent.getStringExtra(MainActivity.NOTE_DEADLINE_KEY));
             }
         }
     }
@@ -77,7 +77,7 @@ public class NoteAddActivity extends AppCompatActivity{
         Intent i = new Intent();
         i.putExtra(MainActivity.NOTE_TITLE_KEY,titleET.getText().toString());
         i.putExtra(MainActivity.NOTE_BODY_KEY,bodyET.getText().toString());
-        i.putExtra(MainActivity.NOTE_DEADLINE_KEY,dateDeadlineET.getText().toString());
+        //i.putExtra(MainActivity.NOTE_DEADLINE_KEY,dateDeadlineET.getText().toString());
         setResult(Activity.RESULT_OK,i);
         finish();
 
